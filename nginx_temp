@@ -1,0 +1,18 @@
+server {
+    listen 80;
+    server_name xxx.com www.xx.com;
+
+    # 靜態檔案伺服器
+    location / {
+        alias /root/projectname/test;
+    }
+
+    # 反向代理到Flask後端
+    location /api/ {
+        proxy_pass http://localhost:8888;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
